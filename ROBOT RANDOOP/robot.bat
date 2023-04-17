@@ -26,8 +26,15 @@ set timelimit=20
 REM seed value casuale (da redere randomico)
 rem set seedvalue=1234
 
-REM Impostare data del giorno (da rendere automatico)
-set currentDate=17_04_23
+REM Impostare data del giorno
+
+for /f "tokens=2 delims==" %%a in ('wmic OS Get localdatetime /value') do set "dt=%%a"
+set "YY=%dt:~2,2%" & set "YYYY=%dt:~0,4%" & set "MM=%dt:~4,2%" & set "DD=%dt:~6,2%"
+set "HH=%dt:~8,2%" & set "Min=%dt:~10,2%" & set "Sec=%dt:~12,2%"
+
+set currentDate=%DD%-%MM%-%YYYY%
+
+
 
 REM percorso della cartella di destinazione
 set outputdir=%name%-%currentDate%
