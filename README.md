@@ -9,5 +9,5 @@ A scopo esemplificativo per la generazione dei test è stato usato il progetto "
 Il time limit, ovvero il limite di tempo massimo per ogni sessione di test, è stato impostato a 20 secondi.
 L'output della coverage e dei test generati è prodotto nella cartella e riporta anche data ed orario per poterlo distungere facilmente dalle successive sessioni di test.
 
-Si noti che non è stato ancora implementata la funzionalità di avere un path "universale" per quanto riguarda la java version 1.8 necessaria per il funzionamento di Randoop ed Emma, la quale dovrà essere (per ora) modificata all'interno del file robot.bat .
+Si noti che non è stato ancora implementato un path "universale" per quanto riguarda la java version 1.8 necessario per il funzionamento di Randoop ed Emma, il quale dovrà essere (per ora) modificato all'interno del file robot.bat .
 L'obiettivo è quello di utilizzare Gitlab come repository dalla quale prelevare le classi caricate.
