@@ -2,21 +2,8 @@
 
 title Robot randoop script
 
-REM nome dell'applicazione da testare
-set name=%1
-
-REM indica il tempo per ogni esecuzione in secondi
-set timelimit=%2
-
-REM Impostare data del giorno
-set currentDate=%3
-
-REM seed value casuale 
-set seedvalue=!RANDOM!
-
 echo Java
 
-REM Percorso java1.8 da modificare per ogni computer
 
 java -version:1.8 
 
@@ -30,6 +17,18 @@ set emmapath=.\emma-2.0.5312\lib\emma.jar
 
 REM percorso di RANDOOP
 set RANDOOP_PATH=.
+
+REM nome java da verificare
+set name=jipa
+
+REM tempo limite calcolo RANDOOP
+set timelimit=20
+
+REM seed value casuale (da redere randomico)
+set seedvalue=!RANDOM!
+
+REM Impostare data del giorno (da rendere automatico)
+set currentDate=17_04_23
 
 REM percorso della cartella di destinazione
 set outputdir=%name%-%currentDate%

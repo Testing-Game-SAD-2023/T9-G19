@@ -8,6 +8,9 @@ import java.util.Scanner;
 public class RunRandoop {
 
 	public static void main(String[] args) {
+		FileConverter file = new FileConverter();
+		file.convert();
+		
 		
 		//String javaPath = "C:\\Program Files (x86)\\Java\\jre1.8.0_351\\bin\\java.exe";
 		String name = "jipa";
@@ -20,12 +23,15 @@ public class RunRandoop {
         currentDate =  currentDate.replace(":", "-");
 			
 		try {
-			Runtime.getRuntime().exec("cmd /c start \"\" robot.bat "+" "+name+" "+timelimit+" "+currentDate );
-		} catch (IOException e) {
+			Process P = Runtime.getRuntime().exec("cmd /c start \"\" /Progetto-SAD-G19_/ROBOT RANDOOP/src/robot.bat "+" "+name+" "+timelimit+" "+currentDate );
+			P.waitFor();
+			
+		} catch (IOException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 	
-		}
+		} 
 		
+
 	}
 }
