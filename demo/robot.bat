@@ -30,6 +30,9 @@ set RANDOOP_PATH=.
 REM percorso della cartella di destinazione
 set outputdir=%name%-%currentDate%-dati_di_copertura
 
+REM creo cartella classes
+mkdir classes
+
 REM percorso della classe da testare
 set ipvar=.\classes
 

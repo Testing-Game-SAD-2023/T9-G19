@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import org.springframework.web.multipart.MultipartFile;
 
 public class RandoopServiceDemo {
-	public void RunRandoop(MultipartFile class_file) {
+	public String RunRandoop(MultipartFile class_file) {
 		//String name = "XMLParser";	
 		String name= (String) class_file.getOriginalFilename().subSequence(0,class_file.getOriginalFilename().length()-5 );
 		int timelimit = 20;
@@ -18,6 +18,11 @@ public class RandoopServiceDemo {
         currentDate = currentDate.replace("/","-");
         currentDate =  currentDate.replace(" ", "--");
         currentDate =  currentDate.replace(":", "-");
+        
+        
+        String cartellaritorno = null;
+        
+        
     	
    /*     try {
         	File f = new File(".\\classes\\"+name+".class");
@@ -32,6 +37,7 @@ public class RandoopServiceDemo {
         
 		try {
 			//"C:\Users\hp\Desktop\demo\XMLParser-2023-05-26--15-55-05-dati_di_copertura\coveragetot.xml"
+			cartellaritorno = (".\\"+name+"-"+currentDate+"-dati_di_copertura\\"+name+"_ErrorTest\\RegressionTest0.java");
 			File f = new File(".\\"+name+"-"+currentDate+"-dati_di_copertura\\coveragetot.xml");
 			Process p=Runtime.getRuntime().exec("cmd /c start \"\" robot.bat "+" "+name+" "+timelimit+" "+currentDate );
 			
@@ -39,11 +45,12 @@ public class RandoopServiceDemo {
 				Thread.sleep(100);
 
 			
-			
 		} catch (IOException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 	
 		}
+		return cartellaritorno;
+
 	}
 }
