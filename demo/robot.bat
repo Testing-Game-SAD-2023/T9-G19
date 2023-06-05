@@ -12,8 +12,10 @@ REM Impostare data del giorno
 set currentDate=%3
 
 REM seed value casuale 
-set seedvalue=!RANDOM!
+set seedvalue=%4
 
+REM timestamp esecuzione precedente
+set vecchiotimestamp=%5
 
 REM Percorso java1.8 da modificare per ogni computer
 set java1.8_path= "C:\Program Files\Java\jre-1.8\bin\java.exe"
@@ -29,6 +31,7 @@ set RANDOOP_PATH=.
 
 REM percorso della cartella di destinazione
 set outputdir=%name%-%currentDate%-dati_di_copertura
+set vecchiooutputdir=%name%-%vecchiotimestamp%-dati_di_copertura
 
 REM creo cartella classes
 mkdir classes
@@ -47,18 +50,36 @@ REM instrumentazione dell'archivio jar e creazione della cartella per contenere 
 echo ---INSTRUMENTAZIONE---
 %java1.8_path% -noverify -classpath %emmapath% emma instr -m fullcopy -d %outputdir% -ip %ipvar% -out %outputdir%\coverage.em
 
+echo %seedvalue%
 REM esegui la sessione e salva le coperture in un file .ec
-echo ---ESEGUILASESSIONE---
-%java1.8_path% -noverify -classpath %outputdir%\classes;%emmapath%;randoop-all-3.0.6.jar randoop.main.Main gentests --testclass=%name% --timelimit=%timelimit%  --junit-output-dir=%outputdir%\%name%_ErrorTest
+echo ---ESEGUI LA SESSIONE---
+%java1.8_path% -noverify -classpath %outputdir%\classes;%emmapath%;randoop-all-3.0.6.jar randoop.main.Main gentests --randomseed=%seedvalue% --testclass=%name% --timelimit=%timelimit%  --junit-output-dir=%outputdir%\%name%_Test 
 
 REM copia del file ec nella stessa cartella del em ed eliminazione del precedente
-echo ---COPIAFILENELLAREPOSITORY---
+echo ---COPIA FILE NELLA REPOSITORY---
 copy coverage.ec %outputdir%\coverage.ec
 del coverage.ec
 
-REM genera il report testuale effettuato il merge con i metadati del file .em
-echo ---GENERAZIONEREPORT---
-%java1.8_path% -classpath %emmapath% emma report -r xml -Dreport.xml.out.file=%outputdir%\coveragetot.xml -in %outputdir%\coverage.em,%outputdir%\coverage.ec
-	
+REM generazione .es con il merge di em ed ec
+%java1.8_path% -classpath %emmapath% emma merge -in %outputdir%\coverage.em,%outputdir%\coverage.ec -out %outputdir%\coverage.es
 
-pause
+REM genera il report testuale effettuato il merge con i metadati del file .em
+echo ---GENERAZIONE REPORT---
+%java1.8_path% -classpath %emmapath% emma report -r xml -Dreport.xml.out.file=%outputdir%\coveragetot.xml -in %outputdir%\coverage.es
+
+if exist %vecchiooutputdir%\coverage.es (
+	echo ---MERGE---
+	%java1.8_path% -classpath %emmapath% emma merge -in %outputdir%\coverage.es,%vecchiooutputdir%\coverage.es -out %outputdir%\coverage.es
+	%java1.8_path% -classpath %emmapath% emma report -r xml -Dreport.xml.out.file=%outputdir%\coveragetot.xml -in %outputdir%\coverage.es
+)
+
+REM setto cartella da zippare
+set source_folder=.\%outputdir%\%name%_Test
+
+REM setto la cartella dei test zippati
+set zip_file=.\%outputdir%\%name%_Test.zip
+
+REM creo il file.zip
+powershell -nologo -noprofile -command "Compress-Archive -Path '%source_folder%\*' -DestinationPath '%zip_file%'"
+
+PAUSE

@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.ByteArrayResource;
 
+import servicedemo.Coverage_Emma;
 import servicedemo.RandoopServiceDemo;
 
 
@@ -35,7 +36,7 @@ public class ControllerDemo {
 	
 	
 	private RandoopServiceDemo randoop = new RandoopServiceDemo();
-	
+	private Coverage_Emma Emma = new Coverage_Emma();
 	/*
     @RequestMapping("/hello")
     public void hello() {
@@ -70,21 +71,32 @@ public class ControllerDemo {
 	public ResponseEntity<Resource> GETFile(@RequestParam("class_file") MultipartFile class_file) throws java.lang.ClassNotFoundException, MalformedURLException{
 		
     	File file = new File("classes/"+ class_file.getOriginalFilename());
-
+    	int cov;
+    	int timelimit=20;
+    	String[] result = null;
+    	String VecchioTimestamp = null;
     	try (OutputStream os = new FileOutputStream(file)) {
     	    os.write(class_file.getBytes());
     	} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	String cartellaritorno = randoop.RunRandoop(class_file);
+    	do {
+    		
+    		result = randoop.RunRandoop(class_file, timelimit, VecchioTimestamp);
+    		VecchioTimestamp = result[2];
+    		cov = Emma.LineCoverage(result[1]);
+    		System.out.println(result[1]);
+    		System.out.println(cov);
+    	}while(cov<60);
 		
-		Resource resource = new UrlResource(new File(cartellaritorno).toURI());
+		Resource resource = new UrlResource(new File(result[0]).toURI());
 		if (!resource.exists()) {
 			throw new ClassNotFoundException("File not found ");
 		}
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\""+resource.getFilename()+"\"")
+				.contentType(MediaType.valueOf("application/zip"))
 				.body(resource);
 	}
 	
