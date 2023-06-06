@@ -8,7 +8,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 
 public class Coverage_Emma {
-	public static int LineCoverage(String path) {
+	public int LineCoverage(String path) {
 		Element line = null;
 		String linecoverage= null;
 		try {

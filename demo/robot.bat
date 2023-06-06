@@ -34,6 +34,7 @@ set outputdir=%name%-%currentDate%-dati_di_copertura
 set vecchiooutputdir=%name%-%vecchiotimestamp%-dati_di_copertura
 
 REM creo cartella classes
+echo ---CREAZIONE CARTELLA INSTRADAMENTO SE NON ESISTENTE---
 mkdir classes
 
 REM percorso della classe da testare
@@ -82,4 +83,4 @@ set zip_file=.\%outputdir%\%name%_Test.zip
 REM creo il file.zip
 powershell -nologo -noprofile -command "Compress-Archive -Path '%source_folder%\*' -DestinationPath '%zip_file%'"
 
-PAUSE
+exit

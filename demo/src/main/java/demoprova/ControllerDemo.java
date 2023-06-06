@@ -68,11 +68,18 @@ public class ControllerDemo {
 	
 	*/
 	@GetMapping("/getFile")
-	public ResponseEntity<Resource> GETFile(@RequestParam("class_file") MultipartFile class_file) throws java.lang.ClassNotFoundException, MalformedURLException{
+	public ResponseEntity<Resource> GETFile(@RequestParam("class_file") MultipartFile class_file,
+											@RequestParam("level") String level) throws java.lang.ClassNotFoundException, MalformedURLException{
 		
     	File file = new File("classes/"+ class_file.getOriginalFilename());
     	int cov;
-    	int timelimit=20;
+    	int ex_cov = 0;
+    	int timelimit = 0;
+    	int max_iter = 0;
+    	int iter = 0;
+    	int sat = 0;
+    	int max_sat = 0;
+    	
     	String[] result = null;
     	String VecchioTimestamp = null;
     	try (OutputStream os = new FileOutputStream(file)) {
@@ -81,16 +88,54 @@ public class ControllerDemo {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	if(Integer.valueOf(level)==1) {
+    		timelimit = 1;
+    		max_iter = 1;
+    		max_sat = 1;
+    	}
+    		
+    	else if(Integer.valueOf(level)==2){
+    		timelimit = 5;
+    		max_iter = 15;
+    		max_sat = 5;
+    	}
+    	else if(Integer.valueOf(level)==3){
+    		timelimit = 10;
+    		max_iter = 30;
+    		max_sat = 10;
+    	}
     	do {
     		
     		result = randoop.RunRandoop(class_file, timelimit, VecchioTimestamp);
     		VecchioTimestamp = result[2];
     		cov = Emma.LineCoverage(result[1]);
+    		if(ex_cov == cov) {
+    			sat++;
+    			System.out.println("uguale"+cov+ex_cov+sat);
+    			ex_cov = cov;
+    			
+    		} else {
+    			
+    			sat = 0;
+    			System.out.println("diverso"+cov+ex_cov+sat);
+    			ex_cov = cov;
+    			
+    		}
+    		
     		System.out.println(result[1]);
     		System.out.println(cov);
-    	}while(cov<60);
+    		iter++;
+    		timelimit = timelimit +2;
+    	}while(iter < max_iter && sat < max_sat);
 		
-		Resource resource = new UrlResource(new File(result[0]).toURI());
+    	
+    	File classFile = new File("classes/"+ (String) class_file.getOriginalFilename().subSequence(0,class_file.getOriginalFilename().length()-5 )+".class");
+    	
+    	classFile.delete();
+    	file.delete();
+		
+    	
+    	Resource resource = new UrlResource(new File(result[0]).toURI());
 		if (!resource.exists()) {
 			throw new ClassNotFoundException("File not found ");
 		}

@@ -42,6 +42,7 @@ public class RandoopServiceDemo {
         
 		try {
 			//"C:\Users\hp\Desktop\demo\XMLParser-2023-05-26--15-55-05-dati_di_copertura\coveragetot.xml"
+
 			zip_ritorno = (".\\"+name+"-"+currentDate+"-dati_di_copertura\\"+name+"_Test.zip");
 			File f = new File(zip_ritorno);
 			xml_ritorno = (".\\"+name+"-"+currentDate+"-dati_di_copertura\\coveragetot.xml");
@@ -49,6 +50,7 @@ public class RandoopServiceDemo {
 			
 			while(!f.exists())
 				Thread.sleep(100);
+			
 
 			
 		} catch (IOException | InterruptedException e) {
