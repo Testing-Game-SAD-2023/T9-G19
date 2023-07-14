@@ -1,13 +1,19 @@
 # Progetto-SAD G19
-
 ## Repository del gruppo 19 
 
-Per la realizzazione del prototipo abbiamo inserito direttamente il jar per l'avvio di Randoop e le librerie di Emma (compresi di jar) per l'ottenimento della coverage dei test automatici casuali generati da Randoop.
-E' stato inoltre implementato uno script batch "robot.bat" per l'avvio di Randoop ed Emma, ed un eseguibile java per poter avviare direttamente il bat da Java "RunRobot.jar".
+### TOOLS UTILIZZATI
+- Randoop
+- EMMA
 
-A scopo esemplificativo per la generazione dei test è stato usato il progetto "jipa", fornitoci in precedenza dal professore Porfirio Tramontana durante il corso di Software Testing.
-Il time limit, ovvero il limite di tempo massimo per ogni sessione di test, è stato impostato a 20 secondi.
-L'output della coverage e dei test generati è prodotto nella cartella e riporta anche data ed orario per poterlo distungere facilmente dalle successive sessioni di test.
+### GUIDA ALL'INSTALLAZIONE 
+Sulla macchina deve essere stata installata la versione 1.8 della JRE e della JDK. Questo è necessario perché Emma funziona solamente con versioni di Java minori o pari alla 8. 
+Per procedere con l’installazione è necessario scaricare il repository sulla propria macchina e spacchettarlo. 
+In seguito è necessario settare due variabili d’ambiente all’interno del file batch “robot.bat”: 
+- set java1.8_path
+- set javac
 
-Si noti che non è stato ancora implementato un path "universale" per quanto riguarda la java version 1.8 necessario per il funzionamento di Randoop ed Emma, il quale dovrà essere (per ora) modificato all'interno del file robot.bat .
-L'obiettivo è quello di utilizzare Gitlab come repository dalla quale prelevare le classi caricate.
+### GUIDA ESEMPIO D'ESECUZIONE 
+Dopo aver installato correttamente l’ambiente, l’admin potrà iniziare con la generazione dei test;
+infatti una volta che apriremo la cartella, potremo utilizzare l’artefatto RunRandoop.jar per iniziare l’esecuzione dei test.
+
+N.B: Nel caso in cui si dovesse erroneamente chiudere (manualmente) la shell, bisognerà cancellare all'interno della cartella FolderTree>Xclasse>RobotTest> qualsiasi file diverso da "LivelloX".
